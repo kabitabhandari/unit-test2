@@ -14,8 +14,9 @@ public class TodoBusinessImplStubTest {
     public void retrieveTodosRelatedToSpring_shouldReturnTodos(){
         TodoService todoServiceStub = new TodoServiceStub();
         TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoServiceStub);
-        List<String> allTTodosRelatedToSpring = todoBusinessImpl.retrieveTodosRelatedToSpring("kabita");
-        Assertions.assertEquals("spring Hiking", allTTodosRelatedToSpring.get(0));
-        Assertions.assertEquals(3, allTTodosRelatedToSpring.size());
+        List<String> filteredTodosRelatedToSpring = todoBusinessImpl.retrieveTodosRelatedToSpring("kabita");
+        Assertions.assertEquals("spring Hiking", filteredTodosRelatedToSpring.get(0));
+        Assertions.assertEquals(3, filteredTodosRelatedToSpring.size());
     }
 }
+
