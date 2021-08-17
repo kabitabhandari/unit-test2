@@ -7,10 +7,12 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class ListTest {
 
@@ -30,10 +32,10 @@ public class ListTest {
 
     @Test
     public void testMockGet() {
-        List listMock = mock(List.class);
+        List<String> listMock = mock(List.class);
         //Argument matcher
-        when(listMock.get(anyInt())).thenReturn("Lucy is my dog!");
-        assertEquals("Lucy is my dog!", listMock.get(0));
+        when(listMock.get(Mockito.anyInt())).thenReturn("Lucy is my dog!");
+        Assertions.assertEquals("Lucy is my dog!", listMock.get(22));
 
     }
 
@@ -44,6 +46,21 @@ public class ListTest {
         List<String> list = mock(List.class);
         when(list.get(Mockito.anyInt())).thenThrow(new RuntimeException("Something went wrong"));
         Assertions.assertThrows(RuntimeException.class, () -> {list.get(0);});
+    }
+
+    @Test
+    public void testMockGetUsingBDD() {
+        //Given
+        List<String> listMock = mock(List.class);
+        given(listMock.get(Mockito.anyInt())).willReturn("Lucy is my dog!");
+
+        // When: listMock.get(0)
+        String firstElement = listMock.get(0);
+
+        //Then: asserts
+        assertEquals("Lucy is my dog!", firstElement);
+        assertThat( firstElement, is("Lucy is my dog!"));
+
     }
 
 
