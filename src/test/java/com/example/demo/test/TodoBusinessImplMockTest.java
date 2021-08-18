@@ -11,8 +11,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class TodoBusinessImplMockTest {
@@ -45,6 +44,30 @@ public class TodoBusinessImplMockTest {
         //Then
         Assertions.assertEquals(2, myFilteredTodos.size());
         assertThat(myFilteredTodos.size(), is(2));
+    }
+
+    @Test
+    public void letsTestDeleteNow() {
+
+        TodoService todoService = mock(TodoService.class);
+
+        List<String> allTodos = Arrays.asList("Learn Spring MVC",
+                "Learn Spring", "Learn to Dance");
+
+        when(todoService.retrieveTodos("kabita")).thenReturn(allTodos);
+
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoService);
+
+        todoBusinessImpl.deleteTodosNotRelatedToSpring("kabita");
+
+        verify(todoService).deleteTodo("Learn to Dance");
+
+        verify(todoService, never()).deleteTodo("Learn Spring MVC");
+
+        verify(todoService, never()).deleteTodo("Learn Spring");
+
+        verify(todoService, times(1)).deleteTodo("Learn to Dance");
+
     }
 }
 
